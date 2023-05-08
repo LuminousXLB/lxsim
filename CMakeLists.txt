@@ -6,8 +6,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_compile_options(-Og -g -Wall -Wextra -Wpedantic)
-
 option(VIVADO_INSTALLATION_ROOT "Vivado installation root"
        "/tools/Xilinx/Vivado/2021.2")
 
