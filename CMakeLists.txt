@@ -8,13 +8,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_compile_options(-Og -g -Wall -Wextra -Wpedantic)
 
-set(VIVADO_INSTALLATION_ROOT
-    "/tools/Xilinx/Vivado/2021.2"
-    CACHE PATH "Vivado installation root")
+option(VIVADO_INSTALLATION_ROOT "Vivado installation root"
+       "/tools/Xilinx/Vivado/2021.2")
 
-set(XSIMK_DESIGN_LIB
-    ""
-    CACHE PATH "XSIMK design library")
+option(XSIMK_DESIGN_LIB "XSIMK design library")
 
 if(NOT XSIMK_DESIGN_LIB)
   message(
