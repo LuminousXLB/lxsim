@@ -19,9 +19,8 @@ int main(int argc, const char *argv[]) {
     dut->open();
 
     puts("#include \"xsi_kernel.h\"");
-    puts("class DUT{");
+    puts("struct DUT{");
     puts("\tstd::shared_ptr<XSI::Kernel> _kernel;");
-    puts("public:");
     for (int pn = 0; pn < dut->get_num_ports(); pn++) {
         printf("\tXSI::Port<XSI::%s,%d> %s;\n",
                XSI::port_direction_to_string(dut->get_port_direction(pn)),
@@ -29,13 +28,12 @@ int main(int argc, const char *argv[]) {
     }
 
     printf("\tDUT(const char *xsimk, bool auto_correct_cwd)");
-    printf(": _kernel(XSI::Kernel::create(xsimk, auto_correct_cwd))");
+    printf(":\n\t _kernel(XSI::Kernel::create(xsimk, auto_correct_cwd))");
     for (int pn = 0; pn < dut->get_num_ports(); pn++) {
-        printf(", %s(_kernel,\"%s\" , %d, %d)", dut->get_port_name(pn),
+        printf(",\n\t %s(_kernel,\"%s\" , %d, %d)", dut->get_port_name(pn),
                dut->get_port_name(pn), pn, dut->get_port_width(pn));
     }
     puts("{}");
-
     puts("};");
 
     dut->close();
