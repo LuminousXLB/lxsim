@@ -325,17 +325,20 @@ template <PortDirection DIR, unsigned WORDS> class Port {
     const unsigned _width;
 
   public:
-    Port(std::shared_ptr<Kernel> dut, const char *port_name, int port_number,
+    Port(std::shared_ptr<Kernel> kernel, const char *port_name, int port_number,
          unsigned width)
-        : _dut(dut), _port_name(port_name), _port_number(port_number),
+        : _dut(kernel), _port_name(port_name), _port_number(port_number),
           _width(width) {
-        if (dut->get_port_number(port_name) != port_number) {
+        if (!kernel) {
+            throw std::runtime_error("Null pointer to kernel");
+        }
+        if (kernel->get_port_number(port_name) != port_number) {
             throw std::runtime_error("Port number mismatch");
         }
-        if (dut->get_port_direction(port_number) != DIR) {
+        if (kernel->get_port_direction(port_number) != DIR) {
             throw std::runtime_error("Port direction mismatch");
         }
-        if (dut->get_port_width(port_number) != width) {
+        if (kernel->get_port_width(port_number) != width) {
             throw std::runtime_error("Port width mismatch");
         }
         if ((width + 31) / 32 != WORDS) {

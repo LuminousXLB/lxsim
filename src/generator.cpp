@@ -22,15 +22,17 @@ int main(int argc, const char *argv[]) {
     puts("struct DUT{");
     puts("\tstd::shared_ptr<XSI::Kernel> kernel;");
     for (int pn = 0; pn < dut->get_num_ports(); pn++) {
-        printf("\tXSI::Port<XSI::%s,%d> %s;\n",
-               XSI::port_direction_to_string(dut->get_port_direction(pn)),
-               dut->get_port_width(pn), dut->get_port_name(pn));
+        const char *dir =
+            XSI::port_direction_to_string(dut->get_port_direction(pn));
+        const char *name = dut->get_port_name(pn);
+        int width = (dut->get_port_width(pn) + 31) / 32;
+        printf("\tXSI::Port<XSI::%s,%d> %s;\n", dir, width, name);
     }
 
-    printf("\tDUT(const char *xsimk, bool auto_correct_cwd)");
-    printf(":\n\t kernel(XSI::Kernel::create(xsimk, auto_correct_cwd))");
+    printf("\tDUT(std::shared_ptr<XSI::Kernel> kernel)");
+    printf(":\n\t\tkernel(kernel)");
     for (int pn = 0; pn < dut->get_num_ports(); pn++) {
-        printf(",\n\t %s(kernel,\"%s\" , %d, %d)", dut->get_port_name(pn),
+        printf(",\n\t\t%s(kernel,\"%s\" , %d, %d)", dut->get_port_name(pn),
                dut->get_port_name(pn), pn, dut->get_port_width(pn));
     }
     puts("{}");
