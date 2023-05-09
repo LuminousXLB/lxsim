@@ -219,7 +219,8 @@ template <unsigned WORDS> class Value {
         }
     }
 
-    p_xsi_vlog_logicval get_ptr() { return _value; }
+    s_xsi_vlog_logicval *get_ptr() { return _value; }
+    const s_xsi_vlog_logicval *get_ptr() const { return _value; }
 
     Bit get_bit(unsigned pos) const {
         if (pos >= _width) {
@@ -264,7 +265,7 @@ template <unsigned WORDS> class Value {
         return ret;
     }
 
-    uint64_t set_word(unsigned widx, uint32_t val) {
+    void set_word(unsigned widx, uint32_t val) {
         if (widx >= WORDS) {
             throw std::runtime_error("Bit index out of range");
         }
